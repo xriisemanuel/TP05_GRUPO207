@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.edu.unju.fi.CarreraMapDTO.MateriaMapDTO;
 import ar.edu.unju.fi.DTO.MateriaDTO;
+import ar.edu.unju.fi.map.MateriaMapDTO;
 //import ar.edu.unju.fi.map.MateriaMapDTO;
 import ar.edu.unju.fi.model.Materia;
 import ar.edu.unju.fi.repository.MateriaRepository;

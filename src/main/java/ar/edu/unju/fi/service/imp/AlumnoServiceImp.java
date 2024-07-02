@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.edu.unju.fi.CarreraMapDTO.AlumnoMapDTO;
 import ar.edu.unju.fi.DTO.AlumnoDTO;
+import ar.edu.unju.fi.map.AlumnoMapDTO;
 //import ar.edu.unju.fi.map.AlumnoMapDTO;
 import ar.edu.unju.fi.model.Alumno;
 import ar.edu.unju.fi.repository.AlumnoRepository;
