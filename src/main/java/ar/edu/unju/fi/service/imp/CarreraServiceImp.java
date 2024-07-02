@@ -1,13 +1,14 @@
 package ar.edu.unju.fi.service.imp;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.unju.fi.CarreraMapDTO.CarreraMapDTO;
 import ar.edu.unju.fi.DTO.CarreraDTO;
-import ar.edu.unju.fi.collections.ListadoCarreras;
+//import ar.edu.unju.fi.collections.ListadoCarreras;
 import ar.edu.unju.fi.model.Carrera;
 import ar.edu.unju.fi.repository.CarreraRepository;
 import ar.edu.unju.fi.service.CarreraService;
@@ -28,17 +29,16 @@ public class CarreraServiceImp implements CarreraService {
 
 	@Override
 	public CarreraDTO findByCodigo(String codigo) {
-		CarreraDTO carreraDTO = carreraMapDTO.toCarreraDTO(ListadoCarreras.buscarCarreraPorCodigo(codigo));
-		return carreraDTO;
+		Optional<Carrera> carreraOpt = carreraRepository.findByCodigo(codigo);
+		return carreraOpt.map(carreraMapDTO::toCarreraDTO).orElse(null);
 	}
 
 	@Override
 	public boolean save(CarreraDTO carreraDTO) {
-		boolean respuesta = ListadoCarreras.agregarCarrera(carreraMapDTO.toCarrera(carreraDTO));
+		//boolean respuesta = ListadoCarreras.agregarCarrera(carreraMapDTO.toCarrera(carreraDTO));
 		Carrera carrera = carreraMapDTO.toCarrera(carreraDTO);
 		carreraRepository.save(carrera);
-		
-		return respuesta;
+		return true;
 	}
 
 	@Override
@@ -58,7 +58,9 @@ public class CarreraServiceImp implements CarreraService {
 
 	@Override
 	public void edit(CarreraDTO carreraDTO) {
-		ListadoCarreras.modificarCarrera(carreraMapDTO.toCarrera(carreraDTO));
+		//ListadoCarreras.modificarCarrera(carreraMapDTO.toCarrera(carreraDTO));
+		Carrera carrera = carreraMapDTO.toCarrera(carreraDTO);
+		carreraRepository.save(carrera);
 	}
 
 	@Override

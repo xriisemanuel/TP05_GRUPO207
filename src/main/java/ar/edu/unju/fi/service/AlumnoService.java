@@ -9,7 +9,7 @@ import ar.edu.unju.fi.model.Alumno;
 public interface AlumnoService {
 	public List<AlumnoDTO> MostrarAlumno(); 
 	AlumnoDTO findByDni(String dni); 
-	boolean save (AlumnoDTO alumnoDTO);//F,
+	boolean save (AlumnoDTO alumnoDTO); //d
 	void deleteByDni(String dni);
 	void edit(AlumnoDTO alumnoDTO);
 	public Alumno buscaAlumno(String dni);	

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.unju.fi.CarreraMapDTO.AlumnoMapDTO;
 import ar.edu.unju.fi.DTO.AlumnoDTO;
-import ar.edu.unju.fi.collections.ListadoAlumnos;
 //import ar.edu.unju.fi.map.AlumnoMapDTO;
 import ar.edu.unju.fi.model.Alumno;
 import ar.edu.unju.fi.repository.AlumnoRepository;
@@ -43,10 +42,10 @@ public class AlumnoServiceImp implements AlumnoService {
 
 	@Override
 	public boolean save(AlumnoDTO alumnoDTO) {
-		boolean respuesta = ListadoAlumnos.agregarAlumno(alumnoMapDTO.toAlumno(alumnoDTO));
+		//boolean respuesta = ListadoAlumnos.agregarAlumno(alumnoMapDTO.toAlumno(alumnoDTO));
 		Alumno alumno = alumnoMapDTO.toAlumno(alumnoDTO);
 		alumnoRepository.save(alumno);
-		return respuesta;
+		return true;
 	}
 
 	@Override
@@ -67,7 +66,10 @@ public class AlumnoServiceImp implements AlumnoService {
 	@Override
 	public void edit(AlumnoDTO alumnoDTO) {
 		// TODO Auto-generated method stub
-		ListadoAlumnos.modificarAlumno(alumnoMapDTO.toAlumno(alumnoDTO));
+		//ListadoAlumnos.modificarAlumno(alumnoMapDTO.toAlumno(alumnoDTO));
+		Alumno alumno = alumnoMapDTO.toAlumno(alumnoDTO);
+		alumnoRepository.save(alumno);
+		
 	}
 
 	@Override
