@@ -25,6 +25,7 @@ public class MateriaServiceImp implements MateriaService {
 	public List<MateriaDTO> MostrarMateria() {
 		// TODO Auto-generated method stub
 		List<MateriaDTO>materiaDTOs=materiaMapDTO.toMateriaDTOList(materiaRepository.findMateriaByEstado(true));
+		System.out.println("Materias recuperadas: " + materiaDTOs.size()); // Verifica si se están recuperando datos
 		return materiaDTOs;
 	}
 

@@ -2,7 +2,10 @@ package ar.edu.unju.fi.DTO;
 
 import org.springframework.stereotype.Component;
 
+import ar.edu.unju.fi.model.Docente;
 import ar.edu.unju.fi.model.Modalidad;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -34,4 +37,5 @@ public class MateriaDTO {
 		
 		private Modalidad modalidad;
 		private Boolean estado;
+		private Docente docente;
 }

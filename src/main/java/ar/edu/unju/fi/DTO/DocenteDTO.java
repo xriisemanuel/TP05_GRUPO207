@@ -2,6 +2,7 @@ package ar.edu.unju.fi.DTO;
 
 import org.springframework.stereotype.Component;
 
+import ar.edu.unju.fi.model.Materia;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -33,4 +34,5 @@ public class DocenteDTO {
     private String telefono;
     private Boolean estado;
     private String foto;
+    private Materia materia;
 }
