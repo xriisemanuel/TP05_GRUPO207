@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import ar.edu.unju.fi.DTO.AlumnoDTO;
 import ar.edu.unju.fi.model.Alumno;
-
+//prueba
 @Service
 public interface AlumnoService {
 	public List<AlumnoDTO> MostrarAlumno(); 
