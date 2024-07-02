@@ -74,7 +74,7 @@ public class AlumnoController {
     @PostMapping("/modificar")
     public String modificarAlumno(@ModelAttribute("nuevoAlumno") AlumnoDTO alumnoDTO) {
         try {
-            alumnoService.save(alumnoDTO);
+            alumnoService.edit(alumnoDTO);
         } catch (Exception e) {
             // Manejo de cualquier excepción que ocurra al modificar el alumno
             return "redirect:/alumno/modificar/" + alumnoDTO.getDni() + "?error=true";

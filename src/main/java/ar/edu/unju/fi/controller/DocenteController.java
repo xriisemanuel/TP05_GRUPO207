@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import ar.edu.unju.fi.DTO.DocenteDTO;
 import ar.edu.unju.fi.service.DocenteService;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/docente")
@@ -47,15 +49,24 @@ public class DocenteController {
 
     // Guarda un nuevo docente
     @PostMapping("/guardar")
-    public String guardarDocente(@ModelAttribute("docente") DocenteDTO docenteDTO) {
-        try {
+    //@Valid @ModelAttribute("nuevoDocente") Tiene que devolver el mismo nombre que viene como objeto del formulario.html
+    public String guardarDocente(@Valid @ModelAttribute("nuevoDocente") DocenteDTO docenteDTO, BindingResult resultado, Model model) { 
+        if (resultado.hasErrors()) {
+            model.addAttribute("nuevoDocente", docenteDTO);
+            model.addAttribute("edicion", false);
+            return "formDocente"; 
+        }else {
+			try {
             docenteService.save(docenteDTO);
-        } catch (Exception e) {
-            // Manejo de cualquier excepción que ocurra al guardar el docente
-            return "redirect:/docente/nuevo?error=true";
-        }
-        return "redirect:/docente/listadoDocente";
+	        } catch (Exception e) {
+	            model.addAttribute("error", "Ocurrió un error al guardar el docente.");
+	            return "formDocente"; // Mostrar el formulario con un mensaje de error
+	        }
+	        return "redirect:/docente/listadoDocente";
+		}
+        
     }
+
 
     // Muestra el formulario para modificar un docente existente
     @GetMapping("/modificar/{legajo}")
@@ -74,14 +85,21 @@ public class DocenteController {
 
     // Guarda las modificaciones de un docente existente
     @PostMapping("/modificar")
-    public String modificarDocente(@ModelAttribute("nuevoDocente") DocenteDTO docenteDTO) {
-        try {
-            docenteService.save(docenteDTO);
-        } catch (Exception e) {
-            // Manejo de cualquier excepción que ocurra al modificar el docente
-            return "redirect:/docente/modificar/" + docenteDTO.getLegajo() + "?error=true";
-        }
-        return "redirect:/docente/listadoDocente";
+    public String modificarDocente(@Valid @ModelAttribute("nuevoDocente") DocenteDTO docenteDTO,BindingResult resultado, Model model) {
+    	if (resultado.hasErrors()) {
+    		model.addAttribute("nuevoDocente", docenteDTO);
+            return "formDocente";
+		}
+    	else {
+			    try {
+	            docenteService.edit(docenteDTO);
+		        } catch (Exception e) {
+		            // Manejo de cualquier excepción que ocurra al modificar el docente
+		            return "redirect:/docente/modificar/" + docenteDTO.getLegajo() + "?error=true";
+		        }
+		        return "redirect:/docente/listadoDocente";
+		}
+       
     }
 
     // Elimina un docente por su legajo

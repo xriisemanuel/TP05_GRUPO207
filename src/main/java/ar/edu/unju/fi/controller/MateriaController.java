@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ar.edu.unju.fi.DTO.MateriaDTO;
 import ar.edu.unju.fi.service.MateriaService;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/materia")
@@ -46,14 +48,22 @@ public class MateriaController {
 
     // Guarda una nueva materia
     @PostMapping("/guardar")
-    public String guardarMateria(@ModelAttribute("materia") MateriaDTO materiaDTO) {
-        try {
+    public String guardarMateria(@Valid @ModelAttribute("nuevaMateria") MateriaDTO materiaDTO,BindingResult resultado, Model model) {
+    	if (resultado.hasErrors()) {
+    		model.addAttribute("nuevaMateria", materiaDTO);
+            model.addAttribute("edicion", false);
+            return "formMateria"; 
+		}
+    	else {
+			/* try { */
             materiaService.save(materiaDTO);
-        } catch (Exception e) {
-            // Manejo de cualquier excepción que ocurra al guardar la materia
-            return "redirect:/materia/nuevo?error=true";
-        }
-        return "redirect:/materia/listado";
+	       /* } catch (Exception e) {
+	            // Manejo de cualquier excepción que ocurra al guardar la materia
+	            return "redirect:/materia/nuevo?error=true";
+	        }*/
+	        return "redirect:/materia/listado";
+		}
+        
     }
 
     // Muestra el formulario para modificar una materia existente
@@ -73,14 +83,21 @@ public class MateriaController {
 
     // Guarda las modificaciones de una materia existente
     @PostMapping("/modificar")
-    public String modificarMateria(@ModelAttribute("nuevaMateria") MateriaDTO materiaDTO) {
-        try {
-            materiaService.save(materiaDTO);
-        } catch (Exception e) {
-            // Manejo de cualquier excepción que ocurra al modificar la materia
-            return "redirect:/materia/modificar/" + materiaDTO.getCodigo() + "?error=true";
-        }
-        return "redirect:/materia/listado";
+    public String modificarMateria(@Valid @ModelAttribute("nuevaMateria") MateriaDTO materiaDTO,BindingResult resultado, Model model) {
+    	if (resultado.hasErrors()) {
+    		model.addAttribute("nuevaMateria", materiaDTO);
+            return "formMateria";
+		}
+    	else {
+			 try {
+            materiaService.edit(materiaDTO);
+	        } catch (Exception e) {
+	            // Manejo de cualquier excepción que ocurra al modificar la materia
+	            return "redirect:/materia/modificar/" + materiaDTO.getCodigo() + "?error=true";
+	        }
+	        return "redirect:/materia/listado";
+		}
+       
     }
 
     // Elimina una materia por su código

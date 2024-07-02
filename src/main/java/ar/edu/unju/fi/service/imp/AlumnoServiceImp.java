@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.unju.fi.CarreraMapDTO.AlumnoMapDTO;
 import ar.edu.unju.fi.DTO.AlumnoDTO;
-import ar.edu.unju.fi.collections.ListadoAlumnos;
 //import ar.edu.unju.fi.map.AlumnoMapDTO;
 import ar.edu.unju.fi.model.Alumno;
 import ar.edu.unju.fi.repository.AlumnoRepository;
@@ -41,14 +40,23 @@ public class AlumnoServiceImp implements AlumnoService {
 		
 	}
 
-	@Override
-	public boolean save(AlumnoDTO alumnoDTO) {
-		boolean respuesta = ListadoAlumnos.agregarAlumno(alumnoMapDTO.toAlumno(alumnoDTO));
-		Alumno alumno = alumnoMapDTO.toAlumno(alumnoDTO);
-		alumnoRepository.save(alumno);
-		return respuesta;
-	}
+	/*
+	 * @Override public boolean save(AlumnoDTO alumnoDTO) { boolean respuesta =
+	 * ListadoAlumnos.agregarAlumno(alumnoMapDTO.toAlumno(alumnoDTO)); Alumno alumno
+	 * = alumnoMapDTO.toAlumno(alumnoDTO); alumnoRepository.save(alumno); return
+	 * respuesta; }
+	 */
+	//cambio
+		@Override
+		public boolean save(AlumnoDTO alumnoDTO) {
+		    Alumno alumno = alumnoMapDTO.toAlumno(alumnoDTO);
+		    alumnoRepository.save(alumno);
+		    return true; // Cambiamos para siempre devolver true ya que no hay Collection.
+		    //Siempre devuelve true, indicando que el guardado fue exitoso.
+		}
 
+		
+		
 	@Override
 	public void deleteByDni(String dni) {
 		// TODO Auto-generated method stub
@@ -63,12 +71,19 @@ public class AlumnoServiceImp implements AlumnoService {
 		      }
 		    }
 	}
+	//cambios
+//	
+//	@Override
+//	public void edit(AlumnoDTO alumnoDTO) {
+//		// TODO Auto-generated method stub
+//		ListadoAlumnos.modificarAlumno(alumnoMapDTO.toAlumno(alumnoDTO));
+//	}
 
-	@Override
-	public void edit(AlumnoDTO alumnoDTO) {
-		// TODO Auto-generated method stub
-		ListadoAlumnos.modificarAlumno(alumnoMapDTO.toAlumno(alumnoDTO));
-	}
+	 @Override
+	    public void edit(AlumnoDTO alumnoDTO) {
+	        Alumno alumno = alumnoMapDTO.toAlumno(alumnoDTO);
+	        alumnoRepository.save(alumno); // Guardamos directamente la edición en la BD.
+	    }
 
 	@Override
 	public Alumno buscaAlumno(String dni) {
