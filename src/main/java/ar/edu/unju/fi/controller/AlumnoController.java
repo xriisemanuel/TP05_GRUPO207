@@ -4,13 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.github.mustachejava.Binding;
+
 import ar.edu.unju.fi.DTO.AlumnoDTO;
 import ar.edu.unju.fi.service.AlumnoService;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/alumno")
@@ -38,22 +43,31 @@ public class AlumnoController {
     // Muestra el formulario para agregar un nuevo alumno
     @GetMapping("/nuevo")
     public String getVistaNuevoAlumno(Model model) {
-        boolean edicion = false;
         model.addAttribute("nuevoAlumno", nuevoAlumnoDTO);
-        model.addAttribute("edicion", edicion);
+        model.addAttribute("edicion", false);
         return "formAlumno";
     }
 
     // Guarda un nuevo alumno
     @PostMapping("/guardar")
-    public String guardarAlumno(@ModelAttribute("nuevoAlumno") AlumnoDTO alumnoDTO) {
-        try {
-            alumnoService.save(alumnoDTO);
-        } catch (Exception e) {
-            // Manejo de cualquier excepción que ocurra al guardar el alumno
-            return "redirect:/alumno/nuevo?error=true";
-        }
-        return "redirect:/alumno/listadoAlumno";
+    public String guardarAlumno(@Valid @ModelAttribute("nuevoAlumno") AlumnoDTO alumnoDTO, BindingResult resultado, Model model) {
+        
+    	if (resultado.hasErrors()) {
+    		model.addAttribute("nuevoAlumno",alumnoDTO);
+    		model.addAttribute("edicion",false);
+    		return "formAlumno";
+    	} else {
+    		
+    		try {
+                alumnoService.save(alumnoDTO);
+            } catch (Exception e) {
+                // Manejo de cualquier excepción que ocurra al guardar el alumno
+                return "redirect:/alumno/nuevo?error=true";
+            }
+            return "redirect:/alumno/listadoAlumno";
+    	}
+    	
+    	
     }
 
     // Muestra el formulario para modificar un alumno existente
@@ -72,14 +86,19 @@ public class AlumnoController {
 
     // Guarda las modificaciones de un alumno existente
     @PostMapping("/modificar")
-    public String modificarAlumno(@ModelAttribute("nuevoAlumno") AlumnoDTO alumnoDTO) {
-        try {
-            alumnoService.save(alumnoDTO);
-        } catch (Exception e) {
-            // Manejo de cualquier excepción que ocurra al modificar el alumno
-            return "redirect:/alumno/modificar/" + alumnoDTO.getDni() + "?error=true";
+    public String modificarAlumno(@Valid @ModelAttribute("nuevoAlumno") AlumnoDTO alumnoDTO, BindingResult resultado, Model model) {
+        if (resultado.hasErrors()) {
+        	model.addAttribute("nuevoAlumno", alumnoDTO);
+        	return "formAlumno";
+        } else {
+        	try {
+                alumnoService.edit(alumnoDTO);
+            } catch (Exception e) {
+                // Manejo de cualquier excepción que ocurra al modificar el alumno
+                return "redirect:/alumno/modificar/" + alumnoDTO.getDni() + "?error=true";
+            }
+            return "redirect:/alumno/listadoAlumno";
         }
-        return "redirect:/alumno/listadoAlumno";
     }
 
     // Elimina un alumno por su DNI

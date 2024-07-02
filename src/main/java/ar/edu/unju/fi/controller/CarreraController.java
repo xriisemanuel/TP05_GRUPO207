@@ -2,6 +2,7 @@ package ar.edu.unju.fi.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ar.edu.unju.fi.DTO.CarreraDTO;
 import ar.edu.unju.fi.service.CarreraService;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/carrera")
@@ -32,21 +34,27 @@ public class CarreraController {
 	
 	@GetMapping("/nuevo")
 	public String getVistaNuevaCarrera(Model model) {
-		boolean edicion = false;
 		model.addAttribute("nuevaCarrera",nuevoCarreraDTO);
-		model.addAttribute("edicion",edicion);
+		model.addAttribute("edicion",false);
 		return "formCarrera";
 	}
 	
 	@PostMapping("/guardar")
-	public String guardarCarrrera(@ModelAttribute("carrera") CarreraDTO carreraDTO) {
-		try {
-			carreraService.save(carreraDTO);
-		} catch(Exception e) {
-			return "redirect:/carrera/nuevo?error=true";
-		}
+	public String guardarCarrera(@Valid @ModelAttribute("nuevaCarrera") CarreraDTO carreraDTO, BindingResult resultado, Model model) {
 		
-		return "redirect:/carrera/listado";
+		if (resultado.hasErrors()) {
+			model.addAttribute("nuevaCarrera", carreraDTO);
+			model.addAttribute("edicion",false);
+			return "formCarrera";
+		} else {
+			try {
+				carreraService.save(carreraDTO);
+			} catch(Exception e) {
+				return "redirect:/carrera/nuevo?error=true";
+			}
+			
+			return "redirect:/carrera/listado";
+		}
 	}
 	
 	@GetMapping("/modificarCarrera/{codigo}")
@@ -63,13 +71,19 @@ public class CarreraController {
 	}
 	
 	@PostMapping("/modificar")
-	public String modificarCarrera(@ModelAttribute("nuevaCarrera") CarreraDTO carreraDTO) {
-		try {
-			carreraService.save(carreraDTO);
-		} catch(Exception e) {
-			 return "redirect:/carrera/modificar/" + carreraDTO.getCodigo() + "?error=true";
+	public String modificarCarrera(@Valid @ModelAttribute("nuevaCarrera") CarreraDTO carreraDTO, BindingResult resultado, Model model) {
+		if (resultado.hasErrors()) {
+			model.addAttribute("nuevaCarrera", carreraDTO);
+			model.addAttribute("edicion",false);
+			return "formCarrera";
+		} else {
+			try {
+				carreraService.save(carreraDTO);
+			} catch(Exception e) {
+				 return "redirect:/carrera/modificar/" + carreraDTO.getCodigo() + "?error=true";
+			}
+			return "redirect:/carrera/listado";
 		}
-		return "redirect:/carrera/listado";
 	}
 	
 	@GetMapping("/borrarCarrera/{codigo}")
