@@ -1,13 +1,13 @@
 package ar.edu.unju.fi.service.imp;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.unju.fi.CarreraMapDTO.MateriaMapDTO;
 import ar.edu.unju.fi.DTO.MateriaDTO;
-import ar.edu.unju.fi.collections.ListadoMateria;
 //import ar.edu.unju.fi.map.MateriaMapDTO;
 import ar.edu.unju.fi.model.Materia;
 import ar.edu.unju.fi.repository.MateriaRepository;
@@ -25,23 +25,24 @@ public class MateriaServiceImp implements MateriaService {
 	public List<MateriaDTO> MostrarMateria() {
 		// TODO Auto-generated method stub
 		List<MateriaDTO>materiaDTOs=materiaMapDTO.toMateriaDTOList(materiaRepository.findMateriaByEstado(true));
+		System.out.println("Materias recuperadas: " + materiaDTOs.size()); // Verifica si se están recuperando datos
 		return materiaDTOs;
 	}
 
 	@Override
 	public MateriaDTO findByCodigo(String codigo) {
 		// TODO Auto-generated method stub
-		MateriaDTO materiaDTO = materiaMapDTO.toMateriaDTO(ListadoMateria.buscarMateriaPorCodigo(codigo));
-		return materiaDTO;
+		Optional<Materia> materiaOpt = materiaRepository.findByCodigo(codigo);
+		return materiaOpt.map(materiaMapDTO::toMateriaDTO).orElse(null);
 	}
 
 	@Override
 	public boolean save(MateriaDTO materiaDTO) {
 		// TODO Auto-generated method stub
-		boolean respuesta = ListadoMateria.agregarMateria(materiaMapDTO.toMateria(materiaDTO));
 		Materia materia = materiaMapDTO.toMateria(materiaDTO);
 		materiaRepository.save(materia);
-		return respuesta;
+		return true;
+		//Siempre devuelve true, indicando que el guardado fue exitoso.
 	}
 
 	@Override
@@ -62,7 +63,8 @@ public class MateriaServiceImp implements MateriaService {
 	@Override
 	public void edit(MateriaDTO materiaDTO) {
 		// TODO Auto-generated method stub
-		ListadoMateria.modificarMateria(materiaMapDTO.toMateria(materiaDTO));
+		Materia materia = materiaMapDTO.toMateria(materiaDTO);
+		materiaRepository.save(materia);
 	}
 
 	@Override

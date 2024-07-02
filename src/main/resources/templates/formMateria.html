@@ -14,28 +14,32 @@
         <header data-th-replace="~{fragments/header::navbar}"></header> 
         
         <div>
-            <h2 data-th-text="${edicion}?'Modificar Carrera':'Nueva Carrera'" class="text-align-center">FORMULARIO CARRERA</h2>
+            <h2 data-th-text="${edicion}?'Modificar Materia':'Nueva Materia'" class="text-align-center">FORMULARIO MATERIA</h2>
         </div>
         
         <form data-th-object="${nuevaMateria}" data-th-action="${edicion}?@{/materia/modificar} : @{/materia/guardar}" method="post">
             <div class="col-sm-6">   
                 <label for="codigo" class="form-label">Código</label> 
                 <input type="text" class="form-control" id="codigo" data-th-field="*{codigo}" data-th-readonly="${edicion}" required>
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('codigo')}" data-th-errors="*{codigo}"></div>
             </div>
             
             <div class="col-sm-6">
                 <label for="nombre" class="form-label">Nombre Materia: </label>
                 <input type="text" class="form-control" id="nombre" data-th-field="*{nombre}" required>
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('nombre')}" data-th-errors="*{nombre}"></div>
             </div>
             
             <div class="col-sm-6">
                 <label for="curso" class="form-label">Curso: </label>
                 <input type="text" class="form-control" id="curso" data-th-field="*{curso}" required>
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('curso')}" data-th-errors="*{curso}"></div>
             </div>
             
             <div class="col-sm-6">
                 <label for="cantidad" class="form-label">Cantidad de Horas: </label>
-                <input type="text" class="form-control" id="cantidad" data-th-field="*{cantidadHoras}" required>
+                <input type="number" class="form-control" id="cantidad" data-th-field="*{cantidadHoras}" required>
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('cantidadHoras')}" data-th-errors="*{cantidadHoras}"></div>
             </div>
             
             <div class="row mb-3 justify-content-center col-3">
@@ -54,8 +58,18 @@
 				</select>
 			</div>
             
+            <div  class="row mb-3 justify-content-center col-3">
+             <select data-th-field="*{docente}" class="form-control" required>
+	                <option value="">Seleccionar docente:</option>
+	                <option data-th-each="docent : ${docentes}" data-th-value="${docent.legajo}" data-th-text="${docent.nombre + ' ' + docent.apellido}"></option>
+	         </select>
+			</div>
+			
+			
+			
             <button type="submit" class="btn btn-primary text-center" data-th-value="${edicion}?'Modificar':'Guardar'">Guardar</button>
         </form>
+        
     </div>    
     <footer data-th-replace="~{fragments/header::footer}" class="container-fluid"></footer> 
     <script data-th-src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
