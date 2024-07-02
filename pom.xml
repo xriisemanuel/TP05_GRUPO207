@@ -76,10 +76,20 @@
 			<version>1.5.5.Final</version>
 		</dependency>
 
+<<<<<<< HEAD
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
  			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+=======
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-bootstarter-validation -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+ 
+>>>>>>> refs/heads/Docente_Materia_MendozaManuelSantiago
 	</dependencies>
 
 	<build>
