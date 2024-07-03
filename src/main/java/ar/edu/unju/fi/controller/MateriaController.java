@@ -37,7 +37,8 @@ public class MateriaController {
     @GetMapping("/listado")
     public String getMateria(Model model) {
         try {
-        	System.out.println("Materias en el modelo: " + materiaService.MostrarMateria()); // Verifica si se están añadiendo al modelo
+        	List<MateriaDTO> materias = materiaService.MostrarMateria();
+        	System.out.println("Materias en el modelo: " + materias); // Verifica si se están añadiendo al modelo
             model.addAttribute("materia", materiaService.MostrarMateria());
            
         } catch (Exception e) {
@@ -53,7 +54,7 @@ public class MateriaController {
         boolean edicion = false; // No quiero editar un objeto
         model.addAttribute("nuevaMateria", nuevaMateriaDTO);
         model.addAttribute("edicion", edicion);
-        
+        //-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
      // Añadir la lista de docentes al modelo
         List<DocenteDTO> docentes = docenteService.MostrarDocente();
         model.addAttribute("docentes", docentes);
@@ -90,6 +91,10 @@ public class MateriaController {
             boolean edicion = true;
             model.addAttribute("nuevaMateria", materiaEncontradoDTO);
             model.addAttribute("edicion", edicion);
+            //-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
+            // Añadir la lista de docentes al modelo
+               List<DocenteDTO> docentes = docenteService.MostrarDocente();
+               model.addAttribute("docentes", docentes);
         } catch (Exception e) {
             // Manejo de cualquier excepción que ocurra al encontrar la materia por código
             return "redirect:/materia/listado?error=true";

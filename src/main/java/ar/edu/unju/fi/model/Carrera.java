@@ -1,9 +1,12 @@
 package ar.edu.unju.fi.model;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -43,6 +46,10 @@ public class Carrera {
 	private Integer cantidadAnios;
 
 	private boolean estado;
+	
+	@OneToMany(mappedBy = "carrera")
+    private List<Alumno> alumnos;
+	
 }
 
 //@Getter

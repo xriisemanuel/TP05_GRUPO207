@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
+import ar.edu.unju.fi.model.Carrera;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
@@ -44,11 +45,9 @@ public class AlumnoDTO {
 	private String email;
 
 	@NotNull(message = "El teléfono no puede ser nulo")
-	@Digits(integer = 1, fraction = 0, message = "Ingrese un valor numérico válido")
-//	 @Min(value = 1000000000, message = "Numero ingresado es inválido")
-//	 @Max(value = 9999999999, message = "Numero ingresado es invalido")
+	//@Digits(integer = 1, fraction = 0, message = "Ingrese un valor numérico válido")
 	@NotBlank(message = "Debe ingresar el teléfono celular")
-	@Pattern(regexp = "^[0-9]\\d{9}$", message = "El teléfono celular debe tener 10 dígitos y comenzar con un dígito del 0 al 9")
+	//@Pattern(regexp = "^[0-9]\\d{8}$", message = "El teléfono celular debe tener 10 dígitos y comenzar con un dígito del 0 al 9")
 	private String telefono;
 
 	@NotNull(message = "La fecha de nacimiento no puede ser nula")
@@ -74,6 +73,6 @@ public class AlumnoDTO {
         return fechaNacimiento != null ? fechaNacimiento.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "";
         
     }
-    
+    private Carrera carrera;
     
 }

@@ -1,5 +1,7 @@
 package ar.edu.unju.fi.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.github.mustachejava.Binding;
 
 import ar.edu.unju.fi.DTO.AlumnoDTO;
+import ar.edu.unju.fi.DTO.CarreraDTO;
+import ar.edu.unju.fi.DTO.DocenteDTO;
 import ar.edu.unju.fi.service.AlumnoService;
+import ar.edu.unju.fi.service.CarreraService;
+import ar.edu.unju.fi.service.DocenteService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -27,6 +33,11 @@ public class AlumnoController {
 
     @Autowired
     AlumnoDTO nuevoAlumnoDTO;
+    
+    
+    @Autowired
+    @Qualifier("carreraServiceImp")
+    CarreraService carreraService;
 
     // Muestra la lista de alumnos
     @GetMapping("/listadoAlumno")
@@ -45,6 +56,11 @@ public class AlumnoController {
     public String getVistaNuevoAlumno(Model model) {
         model.addAttribute("nuevoAlumno", nuevoAlumnoDTO);
         model.addAttribute("edicion", false);
+        //-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
+//        // Añadir la lista de carreras al modelo
+
+        List<CarreraDTO> carreras = carreraService.MostrarCarrera();
+        model.addAttribute("carreras", carreras);
         return "formAlumno";
     }
 
@@ -58,12 +74,12 @@ public class AlumnoController {
     		return "formAlumno";
     	} else {
     		
-    		try {
+    		//try {
                 alumnoService.save(alumnoDTO);
-            } catch (Exception e) {
-                // Manejo de cualquier excepción que ocurra al guardar el alumno
-                return "redirect:/alumno/nuevo?error=true";
-            }
+//            } catch (Exception e) {
+//                // Manejo de cualquier excepción que ocurra al guardar el alumno
+//                return "redirect:/alumno/nuevo?error=true";
+//            }
             return "redirect:/alumno/listadoAlumno";
     	}
     	
@@ -77,6 +93,11 @@ public class AlumnoController {
             AlumnoDTO alumnoEncontradoDTO = alumnoService.findByDni(dni);
             model.addAttribute("nuevoAlumno", alumnoEncontradoDTO);
             model.addAttribute("edicion", true);
+          //-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
+//          // Añadir la lista de carreras al modelo
+
+          List<CarreraDTO> carreras = carreraService.MostrarCarrera();
+          model.addAttribute("carreras", carreras);
         } catch (Exception e) {
             // Manejo de cualquier excepción que ocurra al encontrar el alumno por DNI
             return "redirect:/alumno/listadoAlumno?error=true";
