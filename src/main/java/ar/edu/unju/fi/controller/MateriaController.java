@@ -68,6 +68,10 @@ public class MateriaController {
     	if (resultado.hasErrors()) {
     		model.addAttribute("nuevaMateria", materiaDTO);
             model.addAttribute("edicion", false);
+            //-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
+            // Añadir la lista de docentes al modelo
+               List<DocenteDTO> docentes = docenteService.MostrarDocente();
+               model.addAttribute("docentes", docentes);
             return "formMateria"; 
 		}
     	else {

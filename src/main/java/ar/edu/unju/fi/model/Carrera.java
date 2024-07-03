@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;
@@ -21,6 +22,7 @@ import lombok.Data;
 //import lombok.NonNull;
 //import lombok.RequiredArgsConstructor;
 //import lombok.Setter;
+import lombok.ToString;
 
 //@NoArgsConstructor
 //@RequiredArgsConstructor
@@ -48,7 +50,12 @@ public class Carrera {
 	private boolean estado;
 	
 	@OneToMany(mappedBy = "carrera")
+	@ToString.Exclude // Excluir alumnos del toString para evitar recursión infinita
     private List<Alumno> alumnos;
+	
+	@OneToMany(mappedBy = "carrera")
+	
+	private List<Materia> materias; 
 	
 }
 

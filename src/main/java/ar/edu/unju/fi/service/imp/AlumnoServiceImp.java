@@ -4,13 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import ar.edu.unju.fi.DTO.AlumnoDTO;
 import ar.edu.unju.fi.map.AlumnoMapDTO;
 //import ar.edu.unju.fi.map.AlumnoMapDTO;
 import ar.edu.unju.fi.model.Alumno;
+import ar.edu.unju.fi.model.Materia;
 import ar.edu.unju.fi.repository.AlumnoRepository;
+import ar.edu.unju.fi.repository.MateriaRepository;
 import ar.edu.unju.fi.service.AlumnoService;
 
 
@@ -20,6 +23,9 @@ public class AlumnoServiceImp implements AlumnoService {
 	@Autowired AlumnoMapDTO alumnoMapDTO;
 	@Autowired
 	AlumnoRepository alumnoRepository;
+	
+	@Autowired
+	MateriaRepository materiaRepository;
 	
 	@Override
 	public List<AlumnoDTO> MostrarAlumno() {
@@ -75,6 +81,33 @@ public class AlumnoServiceImp implements AlumnoService {
 	@Override
 	public Alumno buscaAlumno(String dni) {
 		return alumnoRepository.findById(dni).orElse(null);
+	}
+
+	@Override
+	public boolean save(String dni, String codigo) {
+	    // Buscar el alumno por su DNI
+	    Optional<Alumno> alumnoOpt = alumnoRepository.findById(dni);
+	    // Buscar la materia por su código
+	    Optional<Materia> materiaOpt = materiaRepository.findById(codigo);
+
+	    // Verificar si ambos Optional contienen valores
+	    if (alumnoOpt.isPresent() && materiaOpt.isPresent()) {
+	        // Obtener los valores desde los Optional
+	        Alumno alumno = alumnoOpt.get();
+	        Materia materia = materiaOpt.get();
+
+	        // Verificar si la materia no está ya en la lista del alumno
+	        if (!alumno.getMaterias().contains(materia)) {
+	            // Agregar la materia a la lista de materias del alumno
+	            alumno.getMaterias().add(materia);
+	            // Guardar el alumno actualizado en el repositorio
+	            alumnoRepository.save(alumno);
+	        }
+	        // Retornar verdadero indicando éxito
+	        return true;
+	    }
+	    // Retornar falso si el alumno o la materia no se encontraron
+	    return false;
 	}
 
 }

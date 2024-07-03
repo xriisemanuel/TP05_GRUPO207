@@ -2,6 +2,7 @@ package ar.edu.unju.fi.DTO;
 
 import org.springframework.stereotype.Component;
 
+import ar.edu.unju.fi.model.Materia;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;
@@ -39,4 +40,5 @@ public class CarreraDTO {
 	private Integer cantidadAnios;
 
 	private boolean estado;
+	
 }

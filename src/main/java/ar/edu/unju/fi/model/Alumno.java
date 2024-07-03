@@ -1,12 +1,14 @@
 package ar.edu.unju.fi.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
@@ -37,6 +39,7 @@ import lombok.Data;
 //    private String foto;
 //    private Boolean estado;
 //}
+import lombok.ToString;
 
 @Component
 @Data
@@ -87,4 +90,9 @@ public class Alumno {
 	 @ManyToOne
 	 @JoinColumn(name = "codigo")
 	 private Carrera carrera;
+	 
+	
+	 @ManyToMany(mappedBy = "alumnos")
+	 @ToString.Exclude // Excluir materias del toString para evitar recursión infinitas
+	 private List<Materia> materias;
 }

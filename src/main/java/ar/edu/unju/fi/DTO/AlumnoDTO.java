@@ -2,11 +2,13 @@ package ar.edu.unju.fi.DTO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import ar.edu.unju.fi.model.Carrera;
+import ar.edu.unju.fi.model.Materia;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
@@ -75,4 +77,5 @@ public class AlumnoDTO {
     }
     private Carrera carrera;
     
+    private List<Materia> materia;
 }

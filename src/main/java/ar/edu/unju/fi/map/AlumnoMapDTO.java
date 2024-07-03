@@ -22,7 +22,7 @@ public interface AlumnoMapDTO {
 	@Mapping(source = "LU", target = "LU")
 	@Mapping(source = "foto", target = "foto")
 	@Mapping(source = "estado", target = "estado")
-
+	@Mapping(source = "materias", target = "materia")
 	AlumnoDTO toAlumnoDTO(Alumno a);
 
 	@InheritInverseConfiguration

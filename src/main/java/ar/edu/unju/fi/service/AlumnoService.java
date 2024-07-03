@@ -13,4 +13,6 @@ public interface AlumnoService {
 	void deleteByDni(String dni);
 	void edit(AlumnoDTO alumnoDTO);
 	public Alumno buscaAlumno(String dni);	
+	boolean save (String dni,String codigo);
+	
 }
