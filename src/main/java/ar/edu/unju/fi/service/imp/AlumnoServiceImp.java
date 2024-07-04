@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import ar.edu.unju.fi.DTO.AlumnoDTO;
 import ar.edu.unju.fi.map.AlumnoMapDTO;
 import ar.edu.unju.fi.model.Alumno;
+import ar.edu.unju.fi.model.Carrera;
 import ar.edu.unju.fi.repository.AlumnoRepository;
+import ar.edu.unju.fi.repository.CarreraRepository;
 import ar.edu.unju.fi.service.AlumnoService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +24,10 @@ public class AlumnoServiceImp implements AlumnoService {
 
     @Autowired
     AlumnoRepository alumnoRepository;
-
+    
+    @Autowired
+    private CarreraRepository carreraRepository;
+    
     @Override
     public List<AlumnoDTO> MostrarAlumno() {
         log.info("Mostrando listado de alumnos activos");
@@ -76,6 +81,24 @@ public class AlumnoServiceImp implements AlumnoService {
     public Alumno buscaAlumno(String dni) {
         return alumnoRepository.findById(dni).orElse(null);
     }
+
+	@Override
+	public boolean save(String dni, String codigo) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<AlumnoDTO> findByCarrera(String carreraId) {
+		// TODO Auto-generated method stub
+		Carrera carrera = carreraRepository.findByCodigo(carreraId).orElse(null);
+		
+        if (carrera == null) {
+            return null;
+        }
+        List<Alumno> alumnos = alumnoRepository.findByCarreras(carrera);
+        return alumnoMapDTO.toAlumnoDTOList(alumnos);
+	}
 }
 
 

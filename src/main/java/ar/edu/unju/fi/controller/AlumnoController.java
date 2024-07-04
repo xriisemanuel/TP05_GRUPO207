@@ -54,6 +54,8 @@ public class AlumnoController {
     @Autowired
     MateriaDTO materiaDTO;
     
+    String codigoMateriaSelecionado;
+    
     //AGREGAR ATRUBUTOS AL DTO 
     //AGREGAR ATRIBUTOS A LOS MAPER
 
@@ -163,6 +165,7 @@ public class AlumnoController {
     
     public String getVistaInscripcionAlumno(Model model, @PathVariable(value = "dni")String dni) {
     	AlumnoDTO alumnoEncontradoDTO = alumnoService.findByDni(dni);
+    	System.out.println();
 		System.out.println(alumnoEncontradoDTO);
         //-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
 //        // Añadir la lista de carreras al modelo
@@ -171,17 +174,21 @@ public class AlumnoController {
          model.addAttribute("materia", materiaDTOs);
          model.addAttribute("nuevoAlumno", alumnoEncontradoDTO);
          model.addAttribute("edicion", true);
+         model.addAttribute("codigoMateriaSeleccionado", codigoMateriaSelecionado);
        // model.addAttribute("carreras", carreras);
         return "incripcionMateria";  
     }
 
     // guardar INCRIPCION
     @PostMapping("/inscripcion")
-    public String inscribirMateria(@ModelAttribute("nuevoAlumno") AlumnoDTO alumnoDTO,Model model) {
-        //boolean isSaved = alumnoService.save(alumnoDTO.getDni(), codigoMateria);
-       // System.out.println(codigoMateria);
-        System.out.println("AlumnoDTO:   "+ alumnoDTO.getDni());
-        boolean isSaved=true;
+    public String inscribirMateria(@ModelAttribute("nuevoAlumno") AlumnoDTO alumnoDTO, @RequestParam("codigoMateria") String codigoMateria, Model model) {
+        if (alumnoDTO.getDni() == null || codigoMateria == null) {
+            model.addAttribute("mensaje", "DNI del alumno o código de la materia es nulo");
+            return "error";  // Redirigir a una página de error personalizada
+        }
+
+        boolean isSaved = alumnoService.save(alumnoDTO.getDni(), codigoMateria);
+
         if (isSaved) {
             model.addAttribute("mensaje", "Inscripción exitosa");
         } else {

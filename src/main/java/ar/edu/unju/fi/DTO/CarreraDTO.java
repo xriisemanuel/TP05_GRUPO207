@@ -1,5 +1,7 @@
 package ar.edu.unju.fi.DTO;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import ar.edu.unju.fi.model.Materia;
@@ -40,5 +42,6 @@ public class CarreraDTO {
 	private Integer cantidadAnios;
 
 	private boolean estado;
+	private List<AlumnoDTO> alumnos;
 	
 }

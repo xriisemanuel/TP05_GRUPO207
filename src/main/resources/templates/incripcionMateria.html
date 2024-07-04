@@ -1,61 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<link rel="stylesheet" data-th-href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <link rel="stylesheet" href="/css/styles.css"></link>
-	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <meta charset="UTF-8">
+    <title>Formulario Alumno</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-	<header data-th-replace="~{fragments/header::navbar}"></header> 
-          <div class="d-flex justify-content-center align-items-Center">
-            <h2 data-th-text="${edicion}?'Modificar Alumno':'Nuevo	 Alumno'" class="text-aligan-center">FORMULARIO ALUMNO</h2>
-        </div>
-	<div class="container-fluid col d-flex justify-content-center align-items-Center">
-        
-        <form data-th-object="${nuevoAlumno}" data-th-action="@{/alumno/inscripcion}" method="post" class="row">
-        <div class="col-4">
-            
-            <div class="col-sm-12">
-                <label for="nombre" class="form-label">Nombre: </label>
-                <input type="text" class="form-control" id="nombre" data-th-field="*{nombre}" data-th-readonly="${edicion}">
-                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('nombre')}" data-th-errors="*{nombre}" data-th-readonly="${edicion}"></div>
+    <header th:replace="~{fragments/header::navbar}"></header> 
+    <div class="d-flex justify-content-center align-items-center">
+        <h2 th:text="${edicion} ? 'Modificar Alumno' : 'Nuevo Alumno'" class="text-align-center">FORMULARIO ALUMNO</h2>
+    </div>
+    <div class="container-fluid col d-flex justify-content-center align-items-center">
+        <form th:object="${nuevoAlumno}" th:action="@{/alumno/inscripcion}" method="post" class="row">
+            <div class="col-4">
+                <div class="col-sm-12">
+                    <label for="nombre" class="form-label">Nombre: </label>
+                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" th:readonly="${edicion}">
+                    <div class="alert alert-warning" role="alert" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="apellido" class="form-label">Apellido: </label>
+                    <input type="text" class="form-control" id="apellido" th:field="*{apellido}" required th:readonly="${edicion}">
+                    <div class="alert alert-warning" role="alert" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
+                </div>
             </div>
-            
-            <div class="col-sm-12">
-                <label for="nombre" class="form-label">Apellido: </label>
-                <input type="text" class="form-control" id="apellido" data-th-field="*{apellido}" required="required" data-th-readonly="${edicion}">
-                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('apellido')}" data-th-errors="*{apellido}" data-th-readonly="${edicion}"></div>
+            <div class="col">
+                <div class="row mb-3 justify-content-center col-3">
+                    <label for="codigoMateria" class="form-label">Materia: </label>
+                    <select data-th-field="*{materia.codigo}" class="form-control" required id="codigoMateria" name="codigoMateria">
+                        <option value="">Seleccionar Materia:</option>
+                        <option data-th-each="mat : ${materias}" data-th-value="${mat.codigo}" data-th-text="${mat.nombre}"></option>
+                    </select>
+                </div>
             </div>
-            
-            	
-        </div>
-        <div class="col ">
-            
-            
-            <div  class="row mb-3 justify-content-center col-3">
-             <select data-th-field="*{materia}" class="form-control" required id="codigoMateria" name="codigoMateria"> 
-	                <option value="">Seleccionar Materia:</option>
-	                <option data-th-each="mat : ${materia}" data-th-value="${mat.codigo}" data-th-text="${mat.nombre}"></option>
-	         </select>
-	        
-	         
-			</div>
-			 <div  class="row mb-3 justify-content-center col-3">
-				
-			</div>
-         </div>  
-              <div class="d-flex justify-content-center align-items-Center">
-			    <button type="submit" class="btn btn-primary text-center ">Guardar</button>
-			    </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <button type="submit" class="btn btn-primary text-center">Guardar</button>
+            </div>
         </form>
-     
-    </div>    
-    
-    
-	 <footer data-th-replace="~{fragments/header::footer}" class="container-fluid"></footer>
-	<script data-th-src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+    </div>
+    <footer data-th-replace="~{fragments/header::footer}" class="container-fluid"></footer>
+    <script data-th-src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

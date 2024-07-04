@@ -1,4 +1,6 @@
 package ar.edu.unju.fi.controller;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import ar.edu.unju.fi.DTO.AlumnoDTO;
 import ar.edu.unju.fi.DTO.CarreraDTO;
+import ar.edu.unju.fi.service.AlumnoService;
 import ar.edu.unju.fi.service.CarreraService;
 import jakarta.validation.Valid;
 
@@ -21,6 +27,9 @@ public class CarreraController {
 	
 	@Autowired
 	CarreraDTO nuevoCarreraDTO;
+	
+	@Autowired
+    private AlumnoService alumnoService;
 	
 	@GetMapping("/listado")
 	public String getCarreras(Model model) {
@@ -97,6 +106,24 @@ public class CarreraController {
 		
 		return "redirect:/carrera/listado";
 	}
+	
+	@GetMapping("/alumnosPorCarrera")
+	public String getAlumnosPorCarrera(@RequestParam("carreraId") String carreraId, Model model) {
+	    try {
+	        List<AlumnoDTO> alumnos = alumnoService.findByCarrera(carreraId);
+	        System.out.println("Alumnos encontrados: " + alumnos);  // Línea de depuración
+	        model.addAttribute("alumnos", alumnos);
+	        
+	    } catch (Exception e) {
+	        // Manejo de errores, por ejemplo:
+	        model.addAttribute("error", "Error al buscar alumnos por carrera");
+	        return "errorPage"; // Asegúrate de tener una vista 'errorPage.html'
+	    }
+	    return "alumnosPorCarrera"; // Asegúrate de tener una vista 'alumnosPorCarrera.html'
+	}
+
+	
+	
 	
 //NO ELIMINAR ESTA PARTE
   //-------------------------------------------------------------------------------------------------------------------

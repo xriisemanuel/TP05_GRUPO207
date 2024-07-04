@@ -14,5 +14,5 @@ public interface AlumnoService {
 	void edit(AlumnoDTO alumnoDTO);
 	public Alumno buscaAlumno(String dni);	
 	boolean save (String dni,String codigo);
-	
+	List<AlumnoDTO> findByCarrera(String carreraId);
 }

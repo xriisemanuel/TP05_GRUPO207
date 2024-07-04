@@ -49,13 +49,15 @@ public class Carrera {
 
 	private boolean estado;
 	
-	@OneToMany(mappedBy = "carrera")
+	@OneToMany(mappedBy = "carreras")
 	@ToString.Exclude // Excluir alumnos del toString para evitar recursión infinita
     private List<Alumno> alumnos;
 	
 	@OneToMany(mappedBy = "carrera")
 	
 	private List<Materia> materias; 
+	
+
 	
 }
 

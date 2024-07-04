@@ -95,4 +95,9 @@ public class Alumno {
 	 @ManyToMany(mappedBy = "alumnos")
 	 @ToString.Exclude // Excluir materias del toString para evitar recursión infinitas
 	 private List<Materia> materias;
+	 
+	 
+	 @ManyToMany
+	    private List<Carrera> carreras;
+	 
 }

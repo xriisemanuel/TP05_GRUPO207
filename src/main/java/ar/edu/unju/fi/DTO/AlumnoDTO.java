@@ -77,5 +77,7 @@ public class AlumnoDTO {
     }
     private Carrera carrera;
     
-    private List<Materia> materia;
+    private List<MateriaDTO> materia;
+    private List<CarreraDTO> carreras;
+    
 }
