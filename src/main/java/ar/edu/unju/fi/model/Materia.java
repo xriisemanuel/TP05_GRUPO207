@@ -1,12 +1,20 @@
 package ar.edu.unju.fi.model;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -42,5 +50,18 @@ public class Materia {
 	@OneToOne
 	@JoinColumn(name = "legajo")
 	private Docente docente;
+	
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(
+	    name = "materia_alumno",
+	    joinColumns = @JoinColumn(name = "codigo"),
+	    inverseJoinColumns = @JoinColumn(name = "dni")
+	)
+	private List<Alumno> alumnos;
+	
+	 @ManyToOne()
+	 @JoinColumn(name = "carrera_id")
+    private Carrera carrera;
 	
 }

@@ -2,8 +2,10 @@ package ar.edu.unju.fi.model;
 
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +18,7 @@ import lombok.Data;
 @Entity
 
 public class Docente {
-	@Id
+	@Id 
 	@Size(min=8, max=9, message="El nombre debe contener como mínimo 8 caracteres y como máximo 9 caracteres")
 	//@Pattern(regexp = "[A-Z]*+[0-9]*", message = "El legajo debe contener únicamente letras y números. Ejemplo: APU004236")
 	@Pattern(regexp = "^[A-Z]{3}+[0-9]{5,6}$", message = "El legajo debe contener únicamente letras y números. Ejemplo: APU004236")
@@ -34,5 +36,6 @@ public class Docente {
     private String telefono;
     private Boolean estado;
     private String foto;
-
+   
+   
 }

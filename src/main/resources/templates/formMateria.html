@@ -64,9 +64,7 @@
 	                <option data-th-each="docent : ${docentes}" data-th-value="${docent.legajo}" data-th-text="${docent.nombre + ' ' + docent.apellido}"></option>
 	         </select>
 			</div>
-			
-			
-			
+		
             <button type="submit" class="btn btn-primary text-center" data-th-value="${edicion}?'Modificar':'Guardar'">Guardar</button>
         </form>
         

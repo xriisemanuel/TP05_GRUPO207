@@ -1,5 +1,7 @@
 package ar.edu.unju.fi.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -14,8 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.github.mustachejava.Binding;
 
 import ar.edu.unju.fi.DTO.AlumnoDTO;
+import ar.edu.unju.fi.DTO.CarreraDTO;
+import ar.edu.unju.fi.DTO.DocenteDTO;
+import ar.edu.unju.fi.DTO.MateriaDTO;
 import ar.edu.unju.fi.service.AlumnoService;
+import ar.edu.unju.fi.service.CarreraService;
+import ar.edu.unju.fi.service.DocenteService;
+import ar.edu.unju.fi.service.MateriaService;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/alumno")
@@ -27,6 +37,27 @@ public class AlumnoController {
 
     @Autowired
     AlumnoDTO nuevoAlumnoDTO;
+    
+    
+    @Autowired
+    @Qualifier("carreraServiceImp")
+    CarreraService carreraService;
+    
+    @Autowired
+    @Qualifier("materiaServiceImp")
+    MateriaService materiaService;
+
+    
+    @Autowired
+    CarreraDTO carreraDTO;
+    
+    @Autowired
+    MateriaDTO materiaDTO;
+    
+    String codigoMateriaSelecionado;
+    
+    //AGREGAR ATRUBUTOS AL DTO 
+    //AGREGAR ATRIBUTOS A LOS MAPER
 
     // Muestra la lista de alumnos
     @GetMapping("/listadoAlumno")
@@ -45,6 +76,11 @@ public class AlumnoController {
     public String getVistaNuevoAlumno(Model model) {
         model.addAttribute("nuevoAlumno", nuevoAlumnoDTO);
         model.addAttribute("edicion", false);
+        //-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
+//        // Añadir la lista de carreras al modelo
+
+        List<CarreraDTO> carreras = carreraService.MostrarCarrera();
+        model.addAttribute("carreras", carreras);
         return "formAlumno";
     }
 
@@ -55,15 +91,21 @@ public class AlumnoController {
     	if (resultado.hasErrors()) {
     		model.addAttribute("nuevoAlumno",alumnoDTO);
     		model.addAttribute("edicion",false);
+    		//-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
+//          // Añadir la lista de carreras al modelo
+
+          List<CarreraDTO> carreras = carreraService.MostrarCarrera();
+          model.addAttribute("carreras", carreras);
+         
     		return "formAlumno";
     	} else {
     		
-    		try {
+    		//try {
                 alumnoService.save(alumnoDTO);
-            } catch (Exception e) {
-                // Manejo de cualquier excepción que ocurra al guardar el alumno
-                return "redirect:/alumno/nuevo?error=true";
-            }
+//            } catch (Exception e) {
+//                // Manejo de cualquier excepción que ocurra al guardar el alumno
+//                return "redirect:/alumno/nuevo?error=true";
+//            }
             return "redirect:/alumno/listadoAlumno";
     	}
     	
@@ -77,6 +119,11 @@ public class AlumnoController {
             AlumnoDTO alumnoEncontradoDTO = alumnoService.findByDni(dni);
             model.addAttribute("nuevoAlumno", alumnoEncontradoDTO);
             model.addAttribute("edicion", true);
+          //-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
+//          // Añadir la lista de carreras al modelo
+
+          List<CarreraDTO> carreras = carreraService.MostrarCarrera();
+          model.addAttribute("carreras", carreras);
         } catch (Exception e) {
             // Manejo de cualquier excepción que ocurra al encontrar el alumno por DNI
             return "redirect:/alumno/listadoAlumno?error=true";
@@ -112,5 +159,47 @@ public class AlumnoController {
         }
         return "redirect:/alumno/listadoAlumno";
     }
+    
+    //Incriocion a materia
+    @GetMapping("/inscribir/{dni}")
+    
+    public String getVistaInscripcionAlumno(Model model, @PathVariable(value = "dni")String dni) {
+    	AlumnoDTO alumnoEncontradoDTO = alumnoService.findByDni(dni);
+    	System.out.println();
+		System.out.println(alumnoEncontradoDTO);
+        //-----------------CAMBIOS PARA MOSTRAR EN LA VISTA------------------
+//        // Añadir la lista de carreras al modelo
+        
+		 List<MateriaDTO> materiaDTOs = materiaService.MostrarMateria(); 
+         model.addAttribute("materia", materiaDTOs);
+         model.addAttribute("nuevoAlumno", alumnoEncontradoDTO);
+         model.addAttribute("edicion", true);
+         model.addAttribute("codigoMateriaSeleccionado", codigoMateriaSelecionado);
+       // model.addAttribute("carreras", carreras);
+        return "incripcionMateria";  
+    }
+
+    // guardar INCRIPCION
+    @PostMapping("/inscripcion")
+    public String inscribirMateria(@ModelAttribute("nuevoAlumno") AlumnoDTO alumnoDTO, @RequestParam("codigoMateria") String codigoMateria, Model model) {
+        if (alumnoDTO.getDni() == null || codigoMateria == null) {
+            model.addAttribute("mensaje", "DNI del alumno o código de la materia es nulo");
+            return "error";  // Redirigir a una página de error personalizada
+        }
+
+        boolean isSaved = alumnoService.save(alumnoDTO.getDni(), codigoMateria);
+
+        if (isSaved) {
+            model.addAttribute("mensaje", "Inscripción exitosa");
+        } else {
+            model.addAttribute("mensaje", "Error al inscribir la materia");
+        }
+
+        model.addAttribute("alumnoDTO", new AlumnoDTO());
+        model.addAttribute("materias", materiaService.MostrarMateria());
+        return "redirect:/alumno/listadoAlumno";
+    }
+    
+    
 }
 

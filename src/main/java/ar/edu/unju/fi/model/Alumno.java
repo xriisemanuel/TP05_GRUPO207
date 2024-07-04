@@ -1,11 +1,15 @@
 package ar.edu.unju.fi.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
@@ -35,6 +39,7 @@ import lombok.Data;
 //    private String foto;
 //    private Boolean estado;
 //}
+import lombok.ToString;
 
 @Component
 @Data
@@ -58,9 +63,9 @@ public class Alumno {
 	private String email;
 
 	@NotNull(message = "El teléfono no puede ser nulo")
-	@Digits(integer = 1, fraction = 0, message = "Ingrese un valor numérico válido")
+	//@Digits(integer = 1, fraction = 0, message = "Ingrese un valor numérico válido")
 	@NotBlank(message = "Debe ingresar el teléfono celular")
-	@Pattern(regexp = "^[0-9]\\d{9}$", message = "El teléfono celular debe tener 10 dígitos y comenzar con un dígito del 0 al 9")
+	//@Pattern(regexp = "^[0-9]\\d{8,9,10}$", message = "El teléfono celular debe tener 10 dígitos y comenzar con un dígito del 0 al 9")
 	private String telefono;
 
 	@NotNull(message = "La fecha de nacimiento no puede ser nula")
@@ -81,4 +86,18 @@ public class Alumno {
 	private String foto;
 
 	private Boolean estado;
+	
+	 @ManyToOne
+	 @JoinColumn(name = "codigo")
+	 private Carrera carrera;
+	 
+	
+	 @ManyToMany(mappedBy = "alumnos")
+	 @ToString.Exclude // Excluir materias del toString para evitar recursión infinitas
+	 private List<Materia> materias;
+	 
+	 
+	 @ManyToMany
+	    private List<Carrera> carreras;
+	 
 }

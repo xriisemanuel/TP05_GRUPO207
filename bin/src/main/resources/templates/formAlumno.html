@@ -13,30 +13,32 @@
           <div class="d-flex justify-content-center align-items-Center">
             <h2 data-th-text="${edicion}?'Modificar Alumno':'Nuevo	 Alumno'" class="text-aligan-center">FORMULARIO ALUMNO</h2>
         </div>
-	<div class="container-fluid col d-flex justify-content-center align-items-Center" >
-        
-      
+	<div class="container-fluid col d-flex justify-content-center align-items-Center">
         
         <form data-th-object="${nuevoAlumno}" data-th-action="${edicion}?@{/alumno/modificar} : @{/alumno/guardar}" method="post" class="row">
         <div class="col-4">
             <div class="col-sm-12">   
                 <label for="codigo" class="form-label">LU: </label> 
                 <input type="text" class="form-control" id="LU" data-th-field="*{LU}" data-th-readonly="${edicion}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('LU')}" data-th-errors="*{LU}"></div>
             </div>
             
             <div class="col-sm-12">
                 <label for="nombre" class="form-label">DNI: </label>
                 <input type="text" class="form-control" id="dni" data-th-field="*{dni} " data-th-readonly="${edicion}" required="required" >
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('dni')}" data-th-errors="*{dni}"></div>
             </div>
             
             <div class="col-sm-12">
                 <label for="nombre" class="form-label">Nombre: </label>
                 <input type="text" class="form-control" id="nombre" data-th-field="*{nombre}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('nombre')}" data-th-errors="*{nombre}"></div>
             </div>
             
             <div class="col-sm-12">
                 <label for="nombre" class="form-label">Apellido: </label>
                 <input type="text" class="form-control" id="apellido" data-th-field="*{apellido}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('apellido')}" data-th-errors="*{apellido}"></div>
             </div>
             	
         </div>
@@ -44,18 +46,22 @@
         	<div class="col-sm-12">
                 <label for="nombre" class="form-label">Domicilio: </label>
                 <input type="text" class="form-control" id="domicilio" data-th-field="*{domicilio}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('domicilio')}" data-th-errors="*{domicilio}"></div>
             </div>
             <div class="col-sm-6">
                 <label for="nombre" class="form-label">Email: </label>
                 <input type="email" class="form-control" id="email" data-th-field="*{email}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('email')}" data-th-errors="*{email}"></div>
             </div>
             <div class="col-sm-6">
                 <label for="nombre" class="form-label">Fecha De Nacimiento: </label>
                 <input type="date" class="form-control" id="telefono" data-th-field="*{fechaNacimiento}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('fechaNacimiento')}" data-th-errors="*{fechaNacimiento}"></div>
             </div>
             <div class="col-sm-6">
                 <label for="nombre" class="form-label">Telefono: </label>
                 <input type="number" class="form-control" id="telefono" data-th-field="*{telefono}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('telefono')}" data-th-errors="*{telefono}"></div>
             </div>
             
             <div class="col-sm-6">
@@ -75,6 +81,15 @@
 					<option data-th-value="false">Inactivo</option>
 				</select>
 			</div>
+            
+            <div  class="row mb-3 justify-content-center col-3">
+             <select data-th-field="*{carrera.codigo}" class="form-control" required>
+	                <option value="">Seleccionar carrera:</option>
+	                <option data-th-each="car : ${carreras}" data-th-value="${car.codigo}" data-th-text="${car.nombre}"></option>
+	         </select>
+			</div>
+            
+            
             
          </div>  
               <div class="d-flex justify-content-center align-items-Center">

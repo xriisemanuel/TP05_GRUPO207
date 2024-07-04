@@ -14,33 +14,40 @@
         <header data-th-replace="~{fragments/header::navbar}"></header> 
         
         <div>
-            <h2 data-th-text="${edicion}?'Modificar Carrera':'Nueva Carrera'" class="text-aligan-center">FORMULARIO DOCENTE</h2>
+            <h2 data-th-text="${edicion}?'Modificar Docente':'Nuevo Docente'" class="text-aligan-center">FORMULARIO DOCENTE</h2>
         </div>
         
         <form data-th-object="${nuevoDocente}" data-th-action="${edicion}?@{/docente/modificar} : @{/docente/guardar}" method="post">
             <div class="col-sm-6">   
                 <label for="codigo" class="form-label">Legajo: </label> 
                 <input type="text" class="form-control" id="legajo" data-th-field="*{legajo}" data-th-readonly="${edicion}" required="required">
+                 <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('legajo')}" data-th-errors="*{legajo}"></div>
             </div>
             
             <div class="col-sm-6">
                 <label for="nombre" class="form-label">Nombre: </label>
                 <input type="text" class="form-control" id="nombre" data-th-field="*{nombre}" required="required">
+<!--                 <p class="form-text text-danger" data-th-if="${#fields.hasErrors('nombre')}" data-th-errors="*{nombre}"></p> -->
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('nombre')}" data-th-errors="*{nombre}"></div>
+
             </div>
             
             <div class="col-sm-6">
                 <label for="nombre" class="form-label">Apellido: </label>
                 <input type="text" class="form-control" id="apellido" data-th-field="*{apellido}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('apellido')}" data-th-errors="*{apellido}"></div>
             </div>
             
             <div class="col-sm-6">
                 <label for="nombre" class="form-label">Email: </label>
                 <input type="email" class="form-control" id="email" data-th-field="*{email}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('email')}" data-th-errors="*{email}"></div>
             </div>
             
             <div class="col-sm-6">
                 <label for="nombre" class="form-label">Telefono: </label>
                 <input type="number" class="form-control" id="telefono" data-th-field="*{telefono}" required="required">
+                <div class="alert alert-warning" role="alert" data-th-if="${#fields.hasErrors('telefono')}" data-th-errors="*{telefono}"></div>
             </div>
             
 			<div class="col-sm-6">

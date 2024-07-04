@@ -46,6 +46,7 @@
 	      	<td>
 				<a data-th-href="@{/carrera/borrarCarrera/}+${c.codigo}" class="btn btn-danger" role="button">Borrar</a>					
 				<a data-th-href="@{/carrera/modificarCarrera/}+${c.codigo}" class="btn btn-warning" role="button">Modificar</a>
+				<a data-th-href="@{/carrera/alumnosPorCarrera(carreraId=${c.codigo})}" class="btn btn-warning" role="button">Alumnos de Carrera</a>
 			</td>
 	    </tr>
 	   </tbody>

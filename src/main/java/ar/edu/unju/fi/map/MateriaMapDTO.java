@@ -1,4 +1,4 @@
-package ar.edu.unju.fi.CarreraMapDTO;
+package ar.edu.unju.fi.map;
 
 import java.util.List;
 

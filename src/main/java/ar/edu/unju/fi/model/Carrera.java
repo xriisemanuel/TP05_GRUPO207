@@ -1,9 +1,13 @@
 package ar.edu.unju.fi.model;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -18,6 +22,7 @@ import lombok.Data;
 //import lombok.NonNull;
 //import lombok.RequiredArgsConstructor;
 //import lombok.Setter;
+import lombok.ToString;
 
 //@NoArgsConstructor
 //@RequiredArgsConstructor
@@ -43,6 +48,17 @@ public class Carrera {
 	private Integer cantidadAnios;
 
 	private boolean estado;
+	
+	@OneToMany(mappedBy = "carreras")
+	@ToString.Exclude // Excluir alumnos del toString para evitar recursión infinita
+    private List<Alumno> alumnos;
+	
+	@OneToMany(mappedBy = "carrera")
+	
+	private List<Materia> materias; 
+	
+
+	
 }
 
 //@Getter
